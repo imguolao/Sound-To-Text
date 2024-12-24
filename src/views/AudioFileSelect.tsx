@@ -1,24 +1,28 @@
 import { useState } from 'react'
-import InputFileUpload from '../components/InputFileUpload'
+import FileUpload from '../components/FileUpload'
 
 export default function AudioFileSelect() {
-  const [selectedFiles, setSelectedFiles] = useState<File[] | null>(null)
+  const [selectedFiles, setSelectedFiles] = useState<string[] | null>(null)
 
-  const handleFilesChange = (files: FileList) => {
-    setSelectedFiles(files?.length ? Array.from(files) : null)
+  const handleFilesChange = (files: string[]) => {
+    setSelectedFiles(files)
     console.log(files)
   }
 
   return (
     <>
-      <InputFileUpload
-        accept="audio/mp3"
+      <FileUpload
         multiple
+        acceptTips="Accepted mp3,wav files"
+        filters={[{
+          name: 'Audio',
+          extensions: ['mp3', 'wav'],
+        }]}
         onFileSelect={handleFilesChange}
       />
       <div>
         {selectedFiles?.length
-          ? selectedFiles.map(file => <div key={file.name}>{file.name}</div>)
+          ? selectedFiles.map(fileName => <div key={fileName}>{fileName}</div>)
           : null}
       </div>
     </>
